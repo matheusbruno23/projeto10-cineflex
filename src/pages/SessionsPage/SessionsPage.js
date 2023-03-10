@@ -1,6 +1,26 @@
 import styled from "styled-components"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 export default function SessionsPage() {
+
+    const url2 = `https://mock-api.driven.com.br/api/v8/cineflex/movies/ID_DO_FILME/showtimes`
+    const [sessao, setSessao]= useState([])
+
+    useEffect(() => {
+    const promise = axios.get(url2)
+    promise.then((res)=> {
+        setSessao(res)
+        console.log(res.data)
+
+    })
+    promise.catch((res)=> {
+        setSessao(res.data)
+        console.log(res.data)
+    })
+
+    }, [])
+
 
     return (
         <PageContainer>
@@ -9,7 +29,7 @@ export default function SessionsPage() {
                 <SessionContainer>
                     Sexta - 03/03/2023
                     <ButtonsContainer>
-                        <button>14:00</button>
+                        <button onClick={console.log(sessao)}>14:00</button>
                         <button>15:00</button>
                     </ButtonsContainer>
                 </SessionContainer>
