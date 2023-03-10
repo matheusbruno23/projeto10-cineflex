@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
 import axios from "axios"
+import { Link } from "react-router-dom"
 
 export default function HomePage() {
 const [imagens, setImagens] = useState([])
@@ -12,7 +13,6 @@ useEffect(() => {
 
         promise.then((res)=>{
             setImagens(res.data)
-            console.log(res.data)
         })
 
         promise.catch((err)=> {
@@ -27,9 +27,11 @@ useEffect(() => {
         
             <ListContainer>
             {imagens.map((imagem)=> (
-                <MovieContainer key={imagem.id}>
-                <img src={imagem.posterURL} alt={imagem.title}/>
-                </MovieContainer>
+                <Link to={`/sessoes/${imagem.id}`} key={imagem.id}>
+                    <MovieContainer key={imagem.id}>
+                        <img src={imagem.posterURL} alt={imagem.title}/>
+                    </MovieContainer>
+                </Link>
 
             )
             )}
