@@ -16,8 +16,6 @@ export default function SessionsPage() {
         promise.then((res)=> {
             setSessao(res.data.days)
             setImagem(res.data)
-            console.log(res.data)
-            console.log(res.data.days)
         })
         promise.catch((err)=> {
             console.log(err.response.data)
@@ -32,11 +30,14 @@ export default function SessionsPage() {
             Selecione o horário
             <div>
                 {sessao.map((s) => (
+                
                     <SessionContainer key={s.id}>
                         {s.weekday} - {s.date}
                         <ButtonsContainer>
                         {s.showtimes.map((time) => (
+                            <Link to={`/assentos/${time.id}`}>
                             <button key={time.id}>{time.name}</button>
+                            </Link>
                         )
                         )} 
                         </ButtonsContainer>

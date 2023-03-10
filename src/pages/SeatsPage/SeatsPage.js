@@ -1,8 +1,31 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState} from "react"
 import styled from "styled-components"
 import axios from "axios"
+import { useParams } from "react-router-dom"
 
 export default function SeatsPage() {
+
+    const [seats, setSeats] = useState([])
+    const [imagem, setImagem] = useState([])
+    const [hour, setHour] = useState([])
+    const [date, setDate] = useState([])
+    const {idSessao} = useParams()
+
+    useEffect(() => {
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
+        const promise = axios.get(url)
+        promise.then((res)=> {
+            setSeats(res.data.seats)
+            setImagem(res.data.movie)
+            setHour(res.data.name)
+            setDate(res.data.day)
+            console.log(res.data)
+        })
+        promise.catch((err)=> {
+            console.log(err.response.data)
+        })
+
+    }, [])
 
 
     return (
@@ -10,11 +33,10 @@ export default function SeatsPage() {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+            {seats.map((s)=>(
+                <SeatItem key={s.id}>{s.name}</SeatItem>
+            ))}
+
             </SeatsContainer>
 
             <CaptionContainer>
@@ -44,11 +66,11 @@ export default function SeatsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={imagem.posterURL} alt={imagem.title}/>
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{imagem.title}</p>
+                    <p>{date.weekday} - {hour}</p>
                 </div>
             </FooterContainer>
 
