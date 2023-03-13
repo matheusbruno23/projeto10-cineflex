@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
-export default function SuccessPage() {
+export default function SuccessPage({name, cpf, ids}) {
 
     return (
         <PageContainer>
@@ -15,15 +15,15 @@ export default function SuccessPage() {
 
             <TextContainer>
                 <strong><p>Ingressos</p></strong>
-                <p>Assento 01</p>
+                <p>Assento {ids}</p>
                 <p>Assento 02</p>
                 <p>Assento 03</p>
             </TextContainer>
 
             <TextContainer>
                 <strong><p>Comprador</p></strong>
-                <p>Nome: Letícia Chijo</p>
-                <p>CPF: 123.456.789-10</p>
+                <p>Nome: {name}</p>
+                <p>CPF: {cpf}</p>
             </TextContainer>
         <Link to="/">
         <button>Voltar para Home</button>

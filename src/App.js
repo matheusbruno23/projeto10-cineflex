@@ -5,16 +5,23 @@ import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import axios from "axios"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { useState } from "react"
 
 export default function App() {
+    const [name, setName] = useState("")
+    const [cpf, setCpf] = useState("")
+    const [ids, setIds] = useState("")
+
+
+
     return (
         <BrowserRouter>
            <NavContainer>CINEFLEX</NavContainer>
         <Routes>
             <Route  path="/" element={<HomePage />} />
             <Route  path="/sessoes/:idFilme" element={<SessionsPage/>} />
-            <Route  path="/assentos/:idSessao" element={<SeatsPage />} />
-            <Route  path="/sucesso" element={<SuccessPage />} />
+            <Route  path="/assentos/:idSessao" element={<SeatsPage name={name} setName={setName} cpf={cpf} setCpf={setCpf} ids={ids} setIds={setIds} />} />
+            <Route  path="/sucesso" element={<SuccessPage name={name} cpf={cpf} ids={ids} />} />
 
         </Routes>
         </BrowserRouter>

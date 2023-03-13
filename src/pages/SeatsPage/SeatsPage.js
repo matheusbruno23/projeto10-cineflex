@@ -1,15 +1,55 @@
 import { useEffect, useState} from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import Assento from "../../components/Assento"
+import { color } from "../../components/colors"
 
-export default function SeatsPage() {
+export default function SeatsPage({name, setName, cpf , setCpf , ids, setIds}) {
+
+    // estados compra do ingresso
 
     const [seats, setSeats] = useState([])
     const [imagem, setImagem] = useState([])
     const [hour, setHour] = useState([])
     const [date, setDate] = useState([])
     const {idSessao} = useParams()
+    const navigate = useNavigate()
+    //seleção dos assentos
+
+    const [selectSeats, setSelectSeats] = useState([])
+
+
+    function enviaDadosComprador(e){
+        e.preventDefault()
+        const urlPost ="https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
+        const ids = selectSeats.map(s => s.id)
+        const body = {ids: ids, name: name, cpf: cpf}
+
+        const promise = axios.post(urlPost , body)
+        promise.then((res)=> navigate("/sucesso"))
+        promise.catch((err) => console.log(err.response.data))
+
+
+    }
+
+    function reservarAssento(seat){
+        if(!seat.isAvailable){
+            alert("Este assento não está disponível")
+        }
+        else{
+            const selecionado = selectSeats.find((s) => s.id === seat.id)
+            if(selecionado){
+                const lista = selectSeats.filter((s)=> s.id !== seat.id)
+                setSelectSeats(lista)
+            }
+            else{
+                setSelectSeats([...selectSeats , seat])
+            }
+        }
+
+    }
+
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
@@ -19,7 +59,6 @@ export default function SeatsPage() {
             setImagem(res.data.movie)
             setHour(res.data.name)
             setDate(res.data.day)
-            console.log(res.data)
         })
         promise.catch((err)=> {
             console.log(err.response.data)
@@ -33,35 +72,39 @@ export default function SeatsPage() {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-            {seats.map((s)=>(
-                <SeatItem key={s.id}>{s.name}</SeatItem>
-            ))}
-
+                {seats.map((seat)=> (
+                    <Assento 
+                    reservarAssento={reservarAssento} 
+                    key={seat.id} 
+                    seat={seat}
+                    selecionado={selectSeats.find((s) => s.id === seat.id)}
+                    />
+                ))}
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle status="selected"/>
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle status="available"/>
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle status="unavailable"/>
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
 
             <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
-
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
-
-                <button>Reservar Assento(s)</button>
+                <form onSubmit={enviaDadosComprador}>
+                <label htmlFor="nome">Nome do Comprador:</label>
+                <input id="nome" placeholder="Digite seu nome..." required value={name} onChange={e => setName(e.target.value)}/>
+                <label htmlFor="cpf">CPF do Comprador:</label>
+                <input id="cpf" placeholder="Digite seu CPF..." required value={cpf} onChange={e => setCpf(e.target.value)}/>
+                <button type="submit">Reservar Assento(s)</button>
+                </form>
             </FormContainer>
 
             <FooterContainer>
@@ -77,6 +120,8 @@ export default function SeatsPage() {
         </PageContainer>
     )
 }
+
+
 
 const PageContainer = styled.div`
     display: flex;
@@ -121,8 +166,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${props => color[props.status].border};
+    background-color: ${props => color[props.status].background};
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -137,19 +182,7 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;
