@@ -9,8 +9,6 @@ export default function SeatsPage({dadosIngresso,  setDadosIngresso}) {
     // estados compra do ingresso
     const [name, setName] = useState("")
     const [cpf, setCpf] = useState("")
-    const [ids, setIds] = useState("")
-
 
     const [seats, setSeats] = useState([])
     const [imagem, setImagem] = useState([])
@@ -113,14 +111,14 @@ export default function SeatsPage({dadosIngresso,  setDadosIngresso}) {
             <FormContainer>
                 <form onSubmit={enviaDadosComprador}>
                 <label htmlFor="nome">Nome do Comprador:</label>
-                <input id="nome" placeholder="Digite seu nome..." required value={name} onChange={e => setName(e.target.value)}/>
-                <label htmlFor="cpf">CPF do Comprador:</label>
+                <input data-test="client-name" id="nome" placeholder="Digite seu nome..." required value={name} onChange={e => setName(e.target.value)}/>
+                <label data-test="client-cpf" htmlFor="cpf">CPF do Comprador:</label>
                 <input id="cpf" placeholder="Digite seu CPF..." required value={cpf} onChange={e => setCpf(e.target.value)}/>
-                <button type="submit">Reservar Assento(s)</button>
+                <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
                 </form>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={imagem.posterURL} alt={imagem.title}/>
                 </div>

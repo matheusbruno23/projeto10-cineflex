@@ -27,7 +27,7 @@ useEffect(() => {
         
             <ListContainer>
             {imagens.map((imagem)=> (
-                <Link to={`/sessoes/${imagem.id}`} key={imagem.id}>
+                <Link data-test="movie" to={`/sessoes/${imagem.id}`} key={imagem.id}>
                     <MovieContainer key={imagem.id}>
                         <img src={imagem.posterURL} alt={imagem.title}/>
                     </MovieContainer>

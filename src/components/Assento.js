@@ -22,6 +22,7 @@ export default function Assento({seat , reservarAssento , selecionado}) {
     return (
         <>
                 <SeatItem 
+                data-test="seat"
                 status={status} 
                 onClick={() => reservarAssento(seat)}
                 >
