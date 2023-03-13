@@ -5,9 +5,12 @@ import { useNavigate, useParams } from "react-router-dom"
 import Assento from "../../components/Assento"
 import { color } from "../../components/colors"
 
-export default function SeatsPage({name, setName, cpf , setCpf , ids, setIds}) {
-
+export default function SeatsPage({dadosIngresso,  setDadosIngresso}) {
     // estados compra do ingresso
+    const [name, setName] = useState("")
+    const [cpf, setCpf] = useState("")
+    const [ids, setIds] = useState("")
+
 
     const [seats, setSeats] = useState([])
     const [imagem, setImagem] = useState([])
@@ -27,7 +30,17 @@ export default function SeatsPage({name, setName, cpf , setCpf , ids, setIds}) {
         const body = {ids: ids, name: name, cpf: cpf}
 
         const promise = axios.post(urlPost , body)
-        promise.then((res)=> navigate("/sucesso"))
+        promise.then((res)=> {
+            setDadosIngresso({
+                seats: selectSeats.map(s => s.name) ,
+                name: name,
+                cpf: cpf ,
+                title: imagem.title,
+                date: date.date,
+                hour: hour
+            })
+            navigate("/sucesso")
+        })
         promise.catch((err) => console.log(err.response.data))
 
 

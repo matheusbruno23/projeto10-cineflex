@@ -3,16 +3,12 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
-import axios from "axios"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState } from "react"
 
 export default function App() {
-    const [name, setName] = useState("")
-    const [cpf, setCpf] = useState("")
-    const [ids, setIds] = useState("")
 
-
+const [dadosIngresso, setDadosIngresso] = useState({})
 
     return (
         <BrowserRouter>
@@ -20,8 +16,8 @@ export default function App() {
         <Routes>
             <Route  path="/" element={<HomePage />} />
             <Route  path="/sessoes/:idFilme" element={<SessionsPage/>} />
-            <Route  path="/assentos/:idSessao" element={<SeatsPage name={name} setName={setName} cpf={cpf} setCpf={setCpf} ids={ids} setIds={setIds} />} />
-            <Route  path="/sucesso" element={<SuccessPage name={name} cpf={cpf} ids={ids} />} />
+            <Route  path="/assentos/:idSessao" element={<SeatsPage dadosIngresso={dadosIngresso} setDadosIngresso={setDadosIngresso}/>} />
+            <Route  path="/sucesso" element={<SuccessPage dadosIngresso={dadosIngresso} setDadosIngresso={setDadosIngresso}/>} />
 
         </Routes>
         </BrowserRouter>

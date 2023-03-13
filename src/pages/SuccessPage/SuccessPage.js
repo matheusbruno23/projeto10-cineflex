@@ -1,23 +1,24 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
-export default function SuccessPage({name, cpf, ids}) {
-
+export default function SuccessPage({dadosIngresso}) {
+    const {name , cpf, title, date, hour , seats} = dadosIngresso
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
             <TextContainer>
                 <strong><p>Filme e sessão</p></strong>
-                <p>Tudo em todo lugar ao mesmo tempo</p>
-                <p>03/03/2023 - 14:00</p>
+                <p>{title}</p>
+                <p>{date} - {hour}</p>
             </TextContainer>
 
             <TextContainer>
                 <strong><p>Ingressos</p></strong>
-                <p>Assento {ids}</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
+                {seats.map((s) => (
+                <p key={s}>Assento {s}</p>
+                ))}
+
             </TextContainer>
 
             <TextContainer>
